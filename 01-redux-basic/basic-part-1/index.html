@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redux</title>
+  <script src="./redux.min.js"></script>
+</head>
+<body>
+
+  <div>
+    <h1>Total: <span id="total"></span> </h1>
+    <button id="button">Increment</button>
+    <button id="open">Open</button>
+    <button id="close">Close</button>
+
+  </div>
+
+  <script>
+    // Constantes 
+    const INCREMENT = 'increment'
+    const ADD = 'add'
+
+    // Action Creator
+    function increment() {
+      return {type: INCREMENT};
+    }
+
+    function add(payload) {
+      return {type: ADD, payload: payload}
+    }
+
+    // Reducers
+    const initialState = 0
+    function contador(state = initialState, action){
+      switch(action.type) {
+        case INCREMENT:
+          return state + 1
+        case ADD:
+          return state + action.payload
+        default:
+          return state;
+      }
+    }
+    
+    function modal (state = false, action) {
+      switch (action.type) {
+        case 'OPEN':
+          return true
+        case 'CLOSE':
+          return false
+        default:
+          return state;
+      }
+    }
+
+    // Store
+    const reducer = Redux.combineReducers({contador, modal})
+    const store = Redux.createStore(reducer);
+    
+    // Conditions for each action
+    function render() {
+      const {contador, modal} = store.getState();
+      const total = document.getElementById('total')
+      total.innerText = contador;
+
+      if (modal) {
+        total.style.display = 'inline-block'
+      } else {
+        total.style.display = 'none'
+      }
+    }
+    
+    render()
+    store.subscribe(render)
+
+    const button = document.getElementById('button');
+    button.addEventListener('click', () => store.dispatch(increment())) 
+
+    const open = document.getElementById('open')
+    open.addEventListener('click', () => store.dispatch({type: 'OPEN'}))
+
+    const close = document.getElementById('close')
+    close.addEventListener('click', () => store.dispatch({ type: 'CLOSE' }))
+
+  </script>
+</body>
+</html>

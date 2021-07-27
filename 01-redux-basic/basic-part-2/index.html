@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redux</title>
+  <script src="./redux.min.js"></script>
+</head>
+<body>
+  
+  <div id="box" style="background: black; height: 40px;"></div>
+
+  <script>
+    // Função Pura / Pure Function
+    function reducer(state = 0, action) {
+      switch (action.type) {
+        case 'MODIFY_WIDTH':
+          return action.payload;
+        default:
+          return state;
+      }
+    }
+
+    const store = Redux.createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+
+    function render(){
+      const box = document.getElementById('box');
+      box.style.width = store.getState() + 'px'
+    }
+
+    store.subscribe(render)
+
+    store.dispatch({ type: 'MODIFY_WIDTH', payload: 100 })
+    store.dispatch({ type: 'MODIFY_WIDTH', payload: 80 })
+    store.dispatch({ type: 'MODIFY_WIDTH', payload: 60 })
+    store.dispatch({ type: 'MODIFY_WIDTH', payload: 40 })
+    
+    console.log(store.getState());
+
+  </script>
+</body>
+</html>
