@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redux</title>
+  <script src="./redux.min.js"></script>
+  <script src="./immer.umd.production.min.js"></script>
+
+</head>
+<body>
+  <script>
+
+    // Testing Immer in Reducer
+    const initialState = { 
+      name: 'Henrique',
+      age: 21
+    }
+
+    const reducer = immer.produce((state, action) => {
+      switch (action.type) {
+        case 'SET_NAME':
+          state.name = action.payload;
+          break;
+        case 'SET_AGE':
+          state.age = action.payload;
+          break;
+      }
+    }, initialState);
+
+    const store = Redux.createStore(
+        reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    );
+
+    store.dispatch({ type: 'SET_NAME', payload: 'Homelander' });
+    store.dispatch({ type: 'SET_NAME', payload: 'Butcher'});
+    store.dispatch({ type: 'SET_NAME', payload: 'A-train'});
+    store.dispatch({ type: 'SET_AGE', payload: 30});
+    store.dispatch({ type: 'SET_AGE', payload: 32});
+    store.dispatch({ type: 'SET_AGE', payload: 34 });
+    
+  </script>
+</body>
+</html>
