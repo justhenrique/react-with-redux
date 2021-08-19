@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redux</title>
+  <script src="./redux.min.js"></script>
+  <script src="./immer.umd.production.min.js"></script>
+</head>
+
+<body>
+  <h1 id='student'></h1>
+  <p id='lesson'></p>
+  
+  <script type="module">
+    import store from './store/configureStore.js';
+    import { timeIncrement, timeDecrement, setEmail } from './store/students.js'
+    import { completeLesson, completeCourse, resetCourse } from './store/lessons.js'
+
+    function render() {
+      const { students, lessons } = store.getState();
+
+      const studentElementID = document.getElementById('student');
+      const lessonElementID = document.getElementById('lesson');
+
+      studentElementID.innerText = `${students.name}: ${students.email}: ${aluno.daysRemaining}`;
+      lessonElementID.innerText = lessons.filter((lesson) => lesson.complete === true).length;
+
+    }
+
+    render();
+    store.subscribe(render);
+
+    // dispatchs 
+    store.dispatch(timeIncrement());
+    store.dispatch(timeDecrement());
+    store.dispatch(setEmail('tchallaking@wakanda.com'));
+
+    store.dispatch(completeLesson(2));
+    store.dispatch(completeCourse());
+    store.dispatch(resetCourse());
+
+
+  </script>
+</body>
+
+</html>
